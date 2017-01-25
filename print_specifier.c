@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 18:25:40 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/24 21:04:39 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/01/25 18:21:52 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,22 @@ static void ft_masterputnbr(long long int n, s_prt *prt)
 	stock_int(prt, (nb % 10) + 48);
 }
 
+static void	make_char_specif(va_list ap, s_prt *prt, int i)
+{
+	if (ft_strchr("scC", prt->prt[i]))
+		if (prt->prt[i] == 's')
+			prt->spec = ft_strdup(va_arg(ap, char*));
+		if (prt->prt[i] == 'c' || prt->prt[i] == 'C')
+		{
+			prt->spec = ft_strnew(1);
+			prt->spec[0] = va_arg(ap, int);
+		}
+		add_prt(prt, i);
+}
 // |c(C=lc) s(S=ls)| |uU dD i| |oO xX| p
-
-int		make_specifier(va_list ap, s_prt *prt)
+void		make_specifier(va_list ap, s_prt *prt)
 {
 	int i;
-
 //	printf("%s\n", prt->prt); // ICI chheck
 	//flags
 /*	if (prt->prt[i] == '+')
@@ -109,18 +119,8 @@ int		make_specifier(va_list ap, s_prt *prt)
 		}
 		if (prt->prt[i] == 'o' || prt->prt[i] == 'O')
 			ft_putoctal(va_arg(ap, long long int), prt);
-		add_prt(prt);
+		add_prt(prt, i);
 	} // cut it in 2 fct
-	if (ft_strchr("scC", prt->prt[i]))
-	{ // add fct clear&check type
-		if (prt->prt[i] == 's')
-			prt->spec = ft_strdup(va_arg(ap, char*));
-		if (prt->prt[i] == 'c' || prt->prt[i] == 'C')
-		{
-			prt->spec = ft_strnew(1);
-			prt->spec[0] = va_arg(ap, int);
-		}
-		add_prt(prt);
-	}
-	return (0);
+	else
+		make_char_specif(ap, prt, i);
 }

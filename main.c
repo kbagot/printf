@@ -6,27 +6,27 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 15:24:35 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/24 21:04:40 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/01/25 20:34:29 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-int main(void)
+int		main(void)
 {
 	long int n;
 	char *p;
 
-	p = NULL;
+	p = malloc(2);
 	n = 494967296;
 //	n = -200;
 //	while (n <= 200){
 	printf
-		("%ld%dSA%d %s%%u%ct%lx | %p\n", 9223372036854775807, 2, 42, "lol", 't', n, p);
+		("%ld%dSA%#5O %.25s%%u%ct%lx | %p\n", 9223372036854775807, 2, 42, "lol", 't', n, p);
 //	printf
 //		("%s%hhc\n", "lol", 174);
 	ft_printf
-		("%ld%dSA%d %s%%u%ct%lx | %p\n", 9223372036854775807, 2, 42, "lol", 't', n, p);
+		("%ld%dSA%#O %s%%u%ct%lx | %p\n", 9223372036854775807, 2, 42, "lol", 116, n, p);
 //		n++;}
 //	while (n <= 200)
 //	{
