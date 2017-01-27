@@ -6,22 +6,25 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 15:15:14 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/25 14:06:15 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/01/27 14:00:50 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-void	ft_printf(const char *restrict format, ...)
+int		ft_printf(const char *restrict format, ...)
 {
 	int		i;
 	int 	j;
 	va_list	ap;
+	int		pcharc;
 	s_prt	*prt;
 
+	pcharc = 0;
 	i = 0;
 	va_start(ap, format);
 	prt = (s_prt*)malloc(sizeof(s_prt));
+	prt->returnvalue = 0;
 	while (format[i])
 	{
 		if (format[i] == '%')
@@ -55,10 +58,12 @@ void	ft_printf(const char *restrict format, ...)
 		{
 			ft_putchar(format[i]);
 			i++;
+			pcharc++;
 		}
 	}
 //	printf("%s", format);
 //	printf("%d", va_arg(ap, int));
 //	printf("%s", va_arg(ap, char*));
 	va_end(ap);
+	return (prt->returnvalue + pcharc);
 }

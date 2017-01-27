@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 18:25:40 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/25 18:21:52 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/01/27 18:10:23 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void ft_masterputnbr(long long int n, s_prt *prt)
 
 static void	make_char_specif(va_list ap, s_prt *prt, int i)
 {
-	if (ft_strchr("scC", prt->prt[i]))
+	if (ft_strchr("scCi", prt->prt[i]))
 		if (prt->prt[i] == 's')
 			prt->spec = ft_strdup(va_arg(ap, char*));
 		if (prt->prt[i] == 'c' || prt->prt[i] == 'C')
@@ -102,12 +102,19 @@ void		make_specifier(va_list ap, s_prt *prt)
 	prt->i = 0;
 	i = ft_strlen(prt->prt) - 1;
 	if (prt->prt[i] == '%')
-		ft_putchar('%');
-	if (ft_strchr("duixXpoO", prt->prt[i]))
+	{
+//		prt->spec = ft_strdup("%");
+		prt->spec = ft_strnew(1);
+		prt->spec[0] = '%';
+		add_prt(prt, i);
+	}
+	else if (ft_strchr("duixXpoO", prt->prt[i]))
 	{ // add fct clear&check type
 		prt->spec = ft_strnew(20);//malloc for int type/char dned t shit
 		if (prt->prt[i] == 'd' || prt->prt[i] == 'u'|| prt->prt[i] == 'i')
+		{
 			ft_masterputnbr(va_arg(ap, long long int), prt);
+		}
 		if (prt->prt[i] == 'x' || prt->prt[i] == 'X' || prt->prt[i] == 'p')
 		{
 			if (prt->prt[i] == 'p')
