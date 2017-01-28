@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 17:53:04 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/26 20:09:06 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/01/28 18:42:27 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 typedef struct	t_prt
 {
+	int		ispec;
 	int		i;
 	char	*prt;
 	char	*spec;
@@ -40,11 +41,15 @@ typedef struct t_flag
 	int		minus;
 	int		width;
 	int		precision;
+//type 
+	int		l;
+	int		h;
 }				s_flag;
 
 int		main(void);
 int		ft_printf(const char *restrict format, ...);
 void	make_specifier(va_list ap, s_prt *prt);
-void	add_prt(s_prt *prt, int i);
+void	add_prt(s_prt *prt, s_flag *flag);
+void	init_flag(s_flag *flag, s_prt *prt);
 
 #endif
