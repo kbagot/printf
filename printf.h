@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 17:53:04 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/28 18:42:27 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/01/30 17:50:15 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct t_flag
 //type 
 	int		l;
 	int		h;
+	int		j;
+	int		z;
 }				s_flag;
 
 int		main(void);
