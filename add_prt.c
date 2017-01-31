@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 18:57:33 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/30 20:21:01 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/01/31 21:39:29 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_flag(s_flag *flag, s_prt *prt)
 	flag->hash = 0;
 	flag->space = 0;
 	flag->width = 0;
-	flag->precision = 0;
+	flag->precision = -1;
 	flag->l = 0;
 	flag->h = 0;
 	flag->j = 0;
@@ -62,10 +62,14 @@ void	init_flag(s_flag *flag, s_prt *prt)
 				j++;
 			if (prt->prt[j] == '.' && ft_strchr("0123456789", prt->prt[j + 1]))
 				flag->precision = ft_atoi(&prt->prt[j + 1]);
+			else if (prt->prt[j] == '.')
+				flag->precision = 0;
 	//		printf("WIDTH : %d\n PRECISION : %d\n", flag->width, flag->precision);
 		}
 	while (ft_strchr(".0123456789", prt->prt[j]))
 		j++;
+	if (flag->zero == 1 && flag->width != 0 && flag->precision != -1)
+		flag->zero = 0;
 	while (ft_strchr("hljz", prt->prt[j]))
 	{
 		if (prt->prt[j] == 'l')
@@ -75,7 +79,7 @@ void	init_flag(s_flag *flag, s_prt *prt)
 		if (prt->prt[j] == 'j')
 			flag->j++;
 		if (prt->prt[j] == 'z')
-			flag->h++;
+			flag->z++;
 		j++;
 	}
 }
@@ -94,27 +98,41 @@ static void	hash_mod(s_prt *prt)
 
 static void	precision_mod(s_flag *flag, s_prt *prt)
 {
-	prt->speclen = (int)ft_strlen(prt->spec);
-	if (prt->i == 's')
+	int lol;
+
+	lol = 0;
+	if (prt->spec[0] == '-' || prt->spec[0] == '+')
 	{
-	//printf("||||%s|||||\n", prt->spec);
-		prt->spec[flag->precision] = '\0';
-	//	printf("|||[%s]||||\n", prt->spec);
+		lol = prt->spec[0];
+		prt->spec[0] = '0';
 	}
+	prt->speclen = (int)ft_strlen(prt->spec);
+	if (flag->precision == 0 && ft_atoi(prt->spec) == 0)
+		prt->spec[0] = '\0';
+	else if (prt->i == 's')
+		prt->spec[flag->precision] = '\0';
 	else if (flag->precision > prt->speclen)
 		while ((flag->precision - prt->speclen) > 0)
 		{
 			prt_modifier(prt, ft_strjoin("0", prt->spec));
 			flag->precision--;
 		}
+	if (lol == 45)
+		prt_modifier(prt, ft_strjoin("-", prt->spec));
+	if (lol == 43)
+		prt_modifier(prt, ft_strjoin("+", prt->spec));
 }
 
 static void	width_mod(s_flag *flag, s_prt *prt)
 {
 	char	*tmp;
+	int		i;
 
+	i = 0;
 	tmp = ft_strnew(1);
 	prt->speclen = (int)ft_strlen(prt->spec);
+	if (flag->hash == 1 && flag->zero == 1)
+		prt->spec[1] = '0';
 	while ((flag->width - prt->speclen) > 0)
 	{
 		if (flag->zero == 1)
@@ -127,6 +145,18 @@ static void	width_mod(s_flag *flag, s_prt *prt)
 			prt_modifier(prt, ft_strjoin(tmp, prt->spec));
 		flag->width--;
 	}
+	if (prt->spec[0] == '0')
+	{
+		while (prt->spec[i] == '0' && prt->spec[i])
+			i++;
+		if (prt->spec[i] == '+' || prt->spec[i] == '-')
+		{
+			prt->spec[0] = prt->spec[i];
+			prt->spec[i] = '0';
+		}
+	}
+	if (flag->hash == 1 && flag->zero == 1)
+		prt->spec[1] = prt->i;
 }
 
 void		add_prt(s_prt *prt, s_flag *flag)
@@ -137,17 +167,25 @@ void		add_prt(s_prt *prt, s_flag *flag)
 	{
 		if (ft_strchr("cCsSuUdixXpoO%", prt->i))
 		{
-			if (ft_strchr("p", prt->i) == NULL && flag->precision != 0)
-				precision_mod(flag, prt);
-			if (flag->space == 1 && (prt->spec[0] != '-' && prt->spec[0] != '+') 
-					&& ft_strchr("%", prt->i) == NULL)
-				prt_modifier(prt, ft_strjoin(" ", prt->spec));
-			if (flag->hash == 1 && (ft_strchr("oOxX", prt->i)) && prt->spec[0] != '0')
+			if (flag->hash == 1 && (ft_strchr("oOxX", prt->i)) && ft_atoi(prt->spec) != 0)
 				hash_mod(prt);
+			prt->speclen = (int)ft_strlen(prt->spec);
+			if (flag->space == 1 && (prt->spec[0] != '-' && prt->spec[0] != '+') 
+					&& ft_strchr("u%", prt->i) == NULL && (prt->speclen >= flag->width && 
+						prt->speclen >= flag->precision))
+				prt_modifier(prt, ft_strjoin(" ", prt->spec));
+			if (flag->plus == 1 && (ft_strchr("di", prt->i)) && prt->spec[0] != '-')
+			{
+				if (prt->spec[0] == 0)
+					prt->spec[0] = '+';
+				else
+					prt_modifier(prt, ft_strjoin("+", prt->spec));
+			}
+			if (ft_strchr("p%", prt->i) == NULL && flag->precision != -1)
+				precision_mod(flag, prt);
+		//	printf("%s\n", prt->spec);
 			if (flag->width > prt->speclen)
 				width_mod(flag, prt);
-			if (flag->plus == 1 && (ft_strchr("di", prt->i)) && prt->spec[0] != '-')
-				prt_modifier(prt, ft_strjoin("+", prt->spec));
 			ft_putstr(prt->spec);
 		}
 	}
