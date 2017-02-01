@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 18:25:40 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/31 21:37:37 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/01 20:54:39 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ static void ft_puthexa(unsigned long long int n, char c, s_prt *prt)
 		stock_int(prt, (n % 16) + ccase);
 }
 
+static void ft_masterputnbru(unsigned long long int n, s_prt *prt)
+{
+	if (n >= 10)
+		ft_masterputnbru(n / 10, prt);
+	stock_int(prt, (n % 10) + 48);
+}
+
 static void ft_masterputnbr(long long int n, s_prt *prt)
 {
 	unsigned long long int nb;
@@ -60,21 +67,36 @@ static void ft_masterputnbr(long long int n, s_prt *prt)
 
 static void	make_char_specif(va_list ap, s_prt *prt,s_flag *flag)
 {
+	char *tmp;
+
+	tmp = NULL;
 	if (ft_strchr("scCi", prt->i))
 	{
 		if (prt->i == 's')
 		{
-			prt->spec = ft_strdup(va_arg(ap, char*));
-			add_prt(prt, flag);
+			tmp = va_arg(ap, char*);
+			if (tmp != NULL)
+			{
+				prt->spec = ft_strdup(tmp);
+				add_prt(prt, flag);
+			}
+			else
+				ft_putstr("(null)");
 		}
 		if (prt->i == 'c' || prt->i == 'C')
 		{
 			prt->spec = ft_strnew(1);
 			prt->spec[0] = va_arg(ap, int);
-			if (prt->spec[0] != 0)
-				add_prt(prt, flag);
-			else
+			if (prt->spec[0] == 0)
+			{
+	//printf("SLUT\n");
+				if (flag->width > 0)
+					flag->width--;
 				prt->returnvalue++;
+				add_prt(prt, flag);
+			}
+			else
+				add_prt(prt, flag);
 		}
 	}
 }
@@ -119,13 +141,10 @@ void		make_specifier(va_list ap, s_prt *prt)
 		{
 			if (flag->h == 2)
 				ft_masterputnbr((unsigned char)va_arg(ap, int), prt);
-			else if (prt->i == 'U' || flag->l == 1)
-			{
-//				printf("%d\n", flag->l);
-				ft_masterputnbr(va_arg(ap, unsigned long int), prt);
-			}
-				else if (flag->l == 2 || flag->j == 1)
-				ft_masterputnbr(va_arg(ap, unsigned long long int), prt);
+			else if (flag->l == 1 || prt->i == 'U')
+				ft_masterputnbru(va_arg(ap, unsigned long int), prt);
+			else if (flag->l == 2 || flag->j == 1)
+				ft_masterputnbru(va_arg(ap, unsigned long long int), prt);
 			else if (flag->h == 1)
 				ft_masterputnbr((unsigned short int)va_arg(ap, int), prt);
 			else if (flag->l == 0)
@@ -135,10 +154,12 @@ void		make_specifier(va_list ap, s_prt *prt)
 		{
 			if (prt->i == 'p')
 			{
+				//printf("%s\n", prt->spec);
 				ft_strcpy(prt->spec, "0x");
-				prt->i += 2;
+				prt->ispec += 2;
+				ft_puthexa(va_arg(ap, unsigned long long int), prt->i, prt);
 			}
-			if (flag->l == 1)
+			else if (flag->l == 1)
 				ft_puthexa(va_arg(ap, unsigned long int), prt->i, prt);
 			else if (flag->l == 2 || flag->j == 1)
 				ft_puthexa(va_arg(ap, unsigned long long int), prt->i, prt);

@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 15:24:35 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/30 20:20:58 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/01 20:52:23 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int		main(void)
 	n = 42;
 //	n = -200;
 //	while (n <= 200){
-	ft_printf("%#x", 0);
+//	printf("salut %s", NULL);
+	ft_printf("moulitest %p\n", &p);
+//	printf("moulitest %s\n", NULL);
 //	printf
 //		("%.20ld%+dSA%hd |%5.2s%%u%5ct%#x | %p\n", 9223372036854775807, -412, 32769, "lol", 116, n, p);
 //	ft_printf
