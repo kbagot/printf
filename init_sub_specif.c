@@ -1,0 +1,98 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_sub_specif.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/02/02 20:59:11 by kbagot            #+#    #+#             */
+/*   Updated: 2017/02/02 21:27:02 by kbagot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "printf.h"
+
+static void	init_var(s_flag *flag)
+{
+	flag->minus = 0;
+	flag->plus = 0;
+	flag->zero = 0;
+	flag->hash = 0;
+	flag->space = 0;
+	flag->width = 0;
+	flag->precision = -1;
+	flag->l = 0;
+	flag->h = 0;
+	flag->j = 0;
+	flag->z = 0;
+}
+
+static int	init_flag(s_flag *flag, s_prt *prt, int j)
+{
+	while (ft_strchr(" -+#0", prt->prt[j]))
+	{
+		if (prt->prt[j] == '#')
+			flag->hash = 1;
+		if (prt->prt[j] == ' ')
+			flag->space = 1;
+		if (prt->prt[j] == '-')
+			flag->minus = 1;
+		if (prt->prt[j] == '+')
+			flag->plus = 1;
+		if (prt->prt[j] == '0')
+			flag->zero = 1;
+		j++;
+	}
+	if (flag->minus == 1 && flag->zero == 1)
+		flag->zero = 0;
+	if (flag->plus == 1 && flag->space == 1)
+		flag->space = 0;
+	return (j);
+}
+
+static int	init_width_preci(s_flag *flag, s_prt *prt, int j)
+{
+	if (prt->prt[j] == '.' || ft_strchr("0123456789", prt->prt[j]))
+	{
+		if (ft_strchr("0123456789", prt->prt[j]))
+			flag->width = ft_atoi(&prt->prt[j]);
+		while (ft_strchr("0123456789", prt->prt[j]))
+			j++;
+		if (prt->prt[j] == '.' && ft_strchr("0123456789", prt->prt[j + 1]))
+			flag->precision = ft_atoi(&prt->prt[j + 1]);
+		else if (prt->prt[j] == '.')
+			flag->precision = 0;
+	}
+	while (ft_strchr(".0123456789", prt->prt[j]))
+		j++;
+	if (flag->zero == 1 && flag->width != 0 && flag->precision != -1)
+		flag->zero = 0;
+	return (j);
+}
+
+static void	init_length(s_flag *flag, s_prt *prt, int j)
+{
+	while (ft_strchr("hljz", prt->prt[j]))
+	{
+		if (prt->prt[j] == 'l')
+			flag->l++;
+		if (prt->prt[j] == 'h')
+			flag->h++;
+		if (prt->prt[j] == 'j')
+			flag->j++;
+		if (prt->prt[j] == 'z')
+			flag->z++;
+		j++;
+	}
+}
+
+void		init_sub_specif(s_flag *flag, s_prt *prt)
+{
+	int j;
+
+	j = 0;
+	init_var(flag);
+	j = init_flag(flag, prt, j);
+	j = init_width_preci(flag, prt, j);
+	init_length(flag, prt, j);
+}

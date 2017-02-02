@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 18:25:40 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/01 20:54:39 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/02 21:49:43 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ static void	make_char_specif(va_list ap, s_prt *prt,s_flag *flag)
 			prt->spec[0] = va_arg(ap, int);
 			if (prt->spec[0] == 0)
 			{
-	//printf("SLUT\n");
 				if (flag->width > 0)
 					flag->width--;
 				prt->returnvalue++;
@@ -110,7 +109,7 @@ void		make_specifier(va_list ap, s_prt *prt)
 //specifier
 	prt->ispec = 0;
 	flag = (s_flag*)malloc(sizeof(s_flag));
-	init_flag(flag, prt);
+	init_sub_specif(flag, prt);
 	prt->i = prt->prt[ft_strlen(prt->prt) - 1];
 	if (prt->i == '%')
 	{
@@ -154,7 +153,6 @@ void		make_specifier(va_list ap, s_prt *prt)
 		{
 			if (prt->i == 'p')
 			{
-				//printf("%s\n", prt->spec);
 				ft_strcpy(prt->spec, "0x");
 				prt->ispec += 2;
 				ft_puthexa(va_arg(ap, unsigned long long int), prt->i, prt);
@@ -168,7 +166,7 @@ void		make_specifier(va_list ap, s_prt *prt)
 		}
 		if (prt->i == 'o' || prt->i == 'O')
 		{
-			if (flag->l == 1)
+			if (flag->l == 1 || prt->i == 'O')
 				ft_putoctal(va_arg(ap, unsigned long int), prt);
 			else if (flag->l == 2 || flag->j == 1)
 				ft_putoctal(va_arg(ap, unsigned long long int), prt);

@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 17:53:04 by kbagot            #+#    #+#             */
-/*   Updated: 2017/01/30 17:50:15 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/02 21:14:53 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ int		main(void);
 int		ft_printf(const char *restrict format, ...);
 void	make_specifier(va_list ap, s_prt *prt);
 void	add_prt(s_prt *prt, s_flag *flag);
-void	init_flag(s_flag *flag, s_prt *prt);
+void	init_sub_specif(s_flag *flag, s_prt *prt);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 18:57:33 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/01 19:19:51 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/02 21:13:15 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,71 +17,6 @@ static void prt_modifier(s_prt *prt, char *new)
 	ft_strdel(&prt->spec);
 	prt->spec = new;
 	new = NULL;
-}
-
-void	init_flag(s_flag *flag, s_prt *prt)
-{
-	int j;
-
-	j = 0;
-	flag->minus = 0;
-	flag->plus = 0;
-	flag->zero = 0;
-	flag->hash = 0;
-	flag->space = 0;
-	flag->width = 0;
-	flag->precision = -1;
-	flag->l = 0;
-	flag->h = 0;
-	flag->j = 0;
-	flag->z = 0;
-	while (ft_strchr(" -+#0", prt->prt[j]))
-	{
-		if (prt->prt[j] == '#')
-			flag->hash = 1;
-		if (prt->prt[j] == ' ')
-			flag->space = 1;
-		if (prt->prt[j] == '-')
-			flag->minus = 1;
-		if (prt->prt[j] == '+')
-			flag->plus = 1;
-		if (prt->prt[j] == '0')
-			flag->zero = 1;
-		j++;
-	}
-	//clean maybe it's  shit  !!
-	if (flag->minus == 1 && flag->zero == 1)
-		flag->zero = 0;
-	if (flag->plus == 1 && flag->space == 1)
-		flag->space = 0;
-	if (prt->prt[j] == '.' || ft_strchr("0123456789", prt->prt[j]))
-		{
-			if (ft_strchr("0123456789", prt->prt[j]))
-				flag->width = ft_atoi(&prt->prt[j]);
-			while (ft_strchr("0123456789", prt->prt[j]))
-				j++;
-			if (prt->prt[j] == '.' && ft_strchr("0123456789", prt->prt[j + 1]))
-				flag->precision = ft_atoi(&prt->prt[j + 1]);
-			else if (prt->prt[j] == '.')
-				flag->precision = 0;
-	//		printf("WIDTH : %d\n PRECISION : %d\n", flag->width, flag->precision);
-		}
-	while (ft_strchr(".0123456789", prt->prt[j]))
-		j++;
-	if (flag->zero == 1 && flag->width != 0 && flag->precision != -1)
-		flag->zero = 0;
-	while (ft_strchr("hljz", prt->prt[j]))
-	{
-		if (prt->prt[j] == 'l')
-			flag->l++;
-		if (prt->prt[j] == 'h')
-			flag->h++;
-		if (prt->prt[j] == 'j')
-			flag->j++;
-		if (prt->prt[j] == 'z')
-			flag->z++;
-		j++;
-	}
 }
 
 static void	hash_mod(s_prt *prt)
@@ -132,6 +67,7 @@ static void	width_mod(s_flag *flag, s_prt *prt)
 
 	i = 0;
 	tmp = ft_strnew(1);
+	tmp[0] = 32;
 	prt->speclen = (int)ft_strlen(prt->spec);
 	if (flag->hash == 1 && flag->zero == 1)
 		prt->spec[1] = '0';
@@ -139,8 +75,6 @@ static void	width_mod(s_flag *flag, s_prt *prt)
 	{
 		if (flag->zero == 1)
 			tmp[0] = 48;
-		else
-			tmp[0] = 32;
 		if (flag->minus == 1)
 			prt_modifier(prt, ft_strjoin(prt->spec, tmp));
 		else
@@ -194,5 +128,6 @@ void		add_prt(s_prt *prt, s_flag *flag)
 	}
 	prt->returnvalue += ft_strlen(prt->spec);
 	free(prt->spec);
+	free(prt->prt);
 	prt->spec = NULL;
 }
