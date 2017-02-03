@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 18:57:33 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/02 21:13:15 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/03 19:57:42 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,16 @@ void		add_prt(s_prt *prt, s_flag *flag)
 		ft_putstr(prt->spec);
 	else
 	{
-		if (ft_strchr("cCsSuUdixXpoO%", prt->i))
+		if (ft_strchr("cCsSuUDdixXpoO%", prt->i))
 		{
 			if (flag->hash == 1 && (ft_strchr("oOxX", prt->i)) && ft_atoi(prt->spec) != 0)
 				hash_mod(prt);
 			prt->speclen = (int)ft_strlen(prt->spec);
 			if (flag->space == 1 && (prt->spec[0] != '-' && prt->spec[0] != '+') 
-					&& ft_strchr("cu%", prt->i) == NULL && (prt->speclen >= flag->width && 
+					&& ft_strchr("scu%", prt->i) == NULL && (prt->speclen >= flag->width && 
 						prt->speclen >= flag->precision))
 				prt_modifier(prt, ft_strjoin(" ", prt->spec));
+//			printf("[%s]\n", prt->spec);
 			if (flag->plus == 1 && (ft_strchr("di", prt->i)) && prt->spec[0] != '-')
 			{
 				if (prt->spec[0] == 0)

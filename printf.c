@@ -6,11 +6,51 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 15:15:14 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/02 21:13:24 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/03 19:42:38 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
+
+static int enter_parse(s_prt *prt, va_list ap, int i, int j, const char *restrict format)
+{
+	int pp;
+
+	pp = j;
+	while ((ft_strchr("sSpdiDoOuUxXcC%", format[j])) == NULL && format[j])
+		if ((ft_strchr("%#0-+ hljz.123456789", format[j++])) == NULL)
+		{
+			pp = ft_atoi(&format[pp]);
+			if (pp != 0)
+			{
+				if (pp < 0)
+				{
+					pp *= -1;
+					prt->returnvalue += pp;
+					ft_putchar(format[j - 1]);
+					while (--pp > 0)
+						ft_putchar(' ');
+				}
+				else
+				{
+					prt->returnvalue += pp;
+					while (--pp > 0)
+						ft_putchar(' ');
+					ft_putchar(format[j - 1]);
+				}
+				return (j);
+			}
+			else
+				return (j - 1);
+		}
+//		if ((ft_strchr("sSpdiDoOuUxXcC%", format[j])) == NULL)
+//			return (j - 1);
+		prt->prt = ft_strsub(&format[i], 1, j - i);
+		//	printf("check specif stock :%s\n", prt->prt);
+		make_specifier(ap, prt);
+		i = j + 1;
+	return (i);
+}
 
 int		ft_printf(const char *restrict format, ...)
 {
@@ -33,17 +73,7 @@ int		ft_printf(const char *restrict format, ...)
 			if (format[j] == '\0')
 				return (0);
 			if (ft_strchr("sSpdiDoOuUxXcC%", format[j]) == NULL)
-			{
-				while ((ft_strchr("sSpdiDoOuUxXcC%", format[j])) == NULL && format[j])
-					if ((ft_strchr("%#0-+ hljz.123456789", format[j++])) == NULL)
-						return (0);
-				if ((ft_strchr("sSpdiDoOuUxXcC%", format[j])) == NULL)
-					return (0);
-				prt->prt = ft_strsub(&format[i], 1, j - i);
-			//	printf("check specif stock :%s\n", prt->prt);
-				make_specifier(ap, prt);
-				i = j + 1;
-			}
+				i = enter_parse(prt, ap, i, j, format);
 			else
 			{
 				prt->prt = ft_strsub(&format[i], 1, 1);

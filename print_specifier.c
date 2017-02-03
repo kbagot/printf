@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 18:25:40 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/02 21:49:43 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/03 19:42:42 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void ft_masterputnbr(long long int n, s_prt *prt)
 	stock_int(prt, (nb % 10) + 48);
 }
 
-static void	make_char_specif(va_list ap, s_prt *prt,s_flag *flag)
+static void	make_char_specif(va_list ap, s_prt *prt, s_flag *flag)
 {
 	char *tmp;
 
@@ -81,11 +81,14 @@ static void	make_char_specif(va_list ap, s_prt *prt,s_flag *flag)
 				add_prt(prt, flag);
 			}
 			else
+			{
 				ft_putstr("(null)");
+				prt->returnvalue += 6;
+			}
 		}
 		if (prt->i == 'c' || prt->i == 'C')
 		{
-			prt->spec = ft_strnew(1);
+			prt->spec = ft_strnew(2);
 			prt->spec[0] = va_arg(ap, int);
 			if (prt->spec[0] == 0)
 			{
@@ -93,6 +96,7 @@ static void	make_char_specif(va_list ap, s_prt *prt,s_flag *flag)
 					flag->width--;
 				prt->returnvalue++;
 				add_prt(prt, flag);
+				ft_putchar(0);
 			}
 			else
 				add_prt(prt, flag);
@@ -121,32 +125,34 @@ void		make_specifier(va_list ap, s_prt *prt)
 	else if (ft_strchr("DduUixXpoO", prt->i))
 	{ // add fct clear&check type
 		prt->spec = ft_strnew(20);//malloc for int type/char dned t shit
-		if (prt->i == 'd' || prt->i == 'i')
+		if (prt->i == 'd' || prt->i == 'D' || prt->i == 'i')
 		{
-			if (flag->z == 1)
+			if (flag->l == 1 || prt->i == 'D')
+				ft_masterputnbr(va_arg(ap, long int), prt);
+			else if (flag->z == 1)
 				ft_masterputnbr(va_arg(ap, size_t), prt);
 			else if (flag->h == 1)
 				ft_masterputnbr((short int)va_arg(ap, int), prt);
 			else if (flag->h == 2)
 				ft_masterputnbr((signed char)va_arg(ap, int), prt);
-			else if (flag->l == 1)
-				ft_masterputnbr(va_arg(ap, long int), prt);
 			else if (flag->l == 2 || flag->j == 1)
 				ft_masterputnbr(va_arg(ap, long long int), prt);
-			else if (flag->l == 0)
+			else
 				ft_masterputnbr(va_arg(ap, int), prt);
 		}
 		if (prt->i == 'u' || prt->i == 'U')
 		{
-			if (flag->h == 2)
-				ft_masterputnbr((unsigned char)va_arg(ap, int), prt);
-			else if (flag->l == 1 || prt->i == 'U')
+			if (flag->l == 1 || prt->i == 'U')
 				ft_masterputnbru(va_arg(ap, unsigned long int), prt);
+			else if (flag->z == 1)
+				ft_masterputnbru(va_arg(ap, size_t), prt);
+			else if (flag->h == 2)
+				ft_masterputnbr((unsigned char)va_arg(ap, int), prt);
 			else if (flag->l == 2 || flag->j == 1)
 				ft_masterputnbru(va_arg(ap, unsigned long long int), prt);
 			else if (flag->h == 1)
 				ft_masterputnbr((unsigned short int)va_arg(ap, int), prt);
-			else if (flag->l == 0)
+			else
 				ft_masterputnbr(va_arg(ap, unsigned int), prt);
 		}
 		if (prt->i == 'x' || prt->i == 'X' || prt->i == 'p')
@@ -157,20 +163,32 @@ void		make_specifier(va_list ap, s_prt *prt)
 				prt->ispec += 2;
 				ft_puthexa(va_arg(ap, unsigned long long int), prt->i, prt);
 			}
+			else if (flag->z == 1)
+				ft_puthexa(va_arg(ap, size_t), prt->i, prt);
+			else if (flag->h == 2)
+				ft_puthexa((unsigned char)va_arg(ap, int), prt->i, prt);
+			else if (flag->h == 1)
+				ft_puthexa((unsigned short int)va_arg(ap, int), prt->i, prt);
 			else if (flag->l == 1)
 				ft_puthexa(va_arg(ap, unsigned long int), prt->i, prt);
 			else if (flag->l == 2 || flag->j == 1)
 				ft_puthexa(va_arg(ap, unsigned long long int), prt->i, prt);
-			else if (flag->l == 0)
+			else
 				ft_puthexa(va_arg(ap, unsigned int), prt->i, prt);
 		}
 		if (prt->i == 'o' || prt->i == 'O')
 		{
 			if (flag->l == 1 || prt->i == 'O')
 				ft_putoctal(va_arg(ap, unsigned long int), prt);
+			else if (flag->z == 1)
+				ft_putoctal(va_arg(ap, size_t), prt);
+			else if (flag->h == 2)
+				ft_putoctal((unsigned char)va_arg(ap, int), prt);
+			else if (flag->h == 1)
+				ft_putoctal((unsigned short int)va_arg(ap, int), prt);
 			else if (flag->l == 2 || flag->j == 1)
 				ft_putoctal(va_arg(ap, unsigned long long int), prt);
-			else if (flag->l == 0)
+			else
 				ft_putoctal(va_arg(ap, unsigned int), prt);
 		}
 		add_prt(prt, flag);
