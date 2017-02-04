@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 15:24:35 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/03 19:57:46 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/04 20:19:59 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int		main(void)
 	n = 42;
 //	n = -200;
 //	while (n <= 200){
-	n = ft_printf("{% 03d}\n", 0);
-	printf("%d\n", n);
-	n = printf("{% 03d}\n", 0);
-	printf("%d\n", n);
+	n = ft_printf("{%05.s}\n", 0);
+//	printf("%d\n", n);
+	n = printf("{%05.s}", 0);
+//	printf("%d\n", n);
 //	printf("%d\n", ft_printf("%15.4s\n", "I am 42"));
 //	printf("%d\n", printf("%15.4s\n", "I am 42"));
 //	printf

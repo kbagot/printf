@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 20:59:11 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/03 19:57:45 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/04 19:43:32 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ static int	init_width_preci(s_flag *flag, s_prt *prt, int j)
 	}
 	while (ft_strchr(".0123456789", prt->prt[j]))
 		j++;
-	if (flag->zero == 1 && flag->width != 0 && flag->precision != -1)
-		flag->zero = 0;
 	return (j);
 }
 
