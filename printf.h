@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 17:53:04 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/02 21:14:53 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/09 18:09:16 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,20 @@
 # include <limits.h>
 # include <float.h>
 
-typedef struct	t_prt
+typedef struct	s_prt
 {
+	int		index;
 	int		ispec;
 	int		i;
 	char	*prt;
 	char	*spec;
 	int		speclen;
 	int		returnvalue;
-}				s_prt;
+	int		wchar;
+}				t_prt;
 
-typedef struct t_flag
+typedef struct	s_flag
 {
-//flags
 	int		space;
 	int		plus;
 	int		hash;
@@ -41,17 +42,25 @@ typedef struct t_flag
 	int		minus;
 	int		width;
 	int		precision;
-//type 
 	int		l;
 	int		h;
 	int		j;
 	int		z;
-}				s_flag;
+}				t_flag;
 
-int		main(void);
-int		ft_printf(const char *restrict format, ...);
-void	make_specifier(va_list ap, s_prt *prt);
-void	add_prt(s_prt *prt, s_flag *flag);
-void	init_sub_specif(s_flag *flag, s_prt *prt);
+int				main(void);
+int				ft_printf(const char *restrict format, ...);
+void			make_specifier(va_list ap, t_prt *prt);
+void			add_prt(t_prt *prt, t_flag *flag);
+void			init_sub_specif(t_flag *flag, t_prt *prt);
+void			add_length(t_flag *flag, t_prt *prt, va_list ap);
+void			ft_masterputnbr(long long int n, t_prt *prt);
+void			ft_masterputnbru(unsigned long long int n, t_prt *prt);
+void			ft_puthexa(unsigned long long int n, char c, t_prt *prt);
+void			ft_putoctal(unsigned long long int n, t_prt *prt);
+void			make_char_specif(va_list ap, t_prt *prt, t_flag *flag);
+void			width_mod(t_flag *flag, t_prt *prt);
+void			precision_mod(t_flag *flag, t_prt *prt);
+void			prt_modifier(t_prt *prt, char *new);
 
 #endif

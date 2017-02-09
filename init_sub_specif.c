@@ -6,13 +6,13 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 20:59:11 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/04 19:43:32 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/09 14:57:24 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-static void	init_var(s_flag *flag)
+static void	init_var(t_flag *flag)
 {
 	flag->minus = 0;
 	flag->plus = 0;
@@ -27,7 +27,7 @@ static void	init_var(s_flag *flag)
 	flag->z = 0;
 }
 
-static int	init_flag(s_flag *flag, s_prt *prt, int j)
+static int	init_flag(t_flag *flag, t_prt *prt, int j)
 {
 	while (ft_strchr(" -+#0", prt->prt[j]))
 	{
@@ -50,7 +50,7 @@ static int	init_flag(s_flag *flag, s_prt *prt, int j)
 	return (j);
 }
 
-static int	init_width_preci(s_flag *flag, s_prt *prt, int j)
+static int	init_width_preci(t_flag *flag, t_prt *prt, int j)
 {
 	if (prt->prt[j] == '.' || ft_strchr("0123456789", prt->prt[j]))
 	{
@@ -68,7 +68,7 @@ static int	init_width_preci(s_flag *flag, s_prt *prt, int j)
 	return (j);
 }
 
-static void	init_length(s_flag *flag, s_prt *prt, int j)
+static void	init_length(t_flag *flag, t_prt *prt, int j)
 {
 	while (ft_strchr("hljz", prt->prt[j]))
 	{
@@ -84,7 +84,7 @@ static void	init_length(s_flag *flag, s_prt *prt, int j)
 	}
 }
 
-void		init_sub_specif(s_flag *flag, s_prt *prt)
+void		init_sub_specif(t_flag *flag, t_prt *prt)
 {
 	int j;
 
