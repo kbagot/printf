@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 19:16:31 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/09 18:09:12 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/09 18:37:50 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@
  return  pointer;
  }
  */
-static void spec_s()
+static void	spec_s(t_prt *prt, t_flag *flag, va_list ap)
 {
+	char	*tmp;
+
 	tmp = va_arg(ap, char*);
 	if (tmp != NULL)
 	{
@@ -62,7 +64,7 @@ static void spec_s()
 	}
 }
 
-static void	spec_c()
+static void	spec_c(t_prt *prt, t_flag *flag, va_list ap)
 {
 	prt->spec = ft_strnew(2);
 	prt->spec[0] = va_arg(ap, int);
@@ -80,11 +82,9 @@ static void	spec_c()
 
 void		make_char_specif(va_list ap, t_prt *prt, t_flag *flag)
 {
-	char	*tmp;
 	int		dec;
 
 	dec = 0;
-	tmp = NULL;
 	/*	if (ft_strchr("SC", prt->i))
 		{
 
@@ -104,8 +104,8 @@ void		make_char_specif(va_list ap, t_prt *prt, t_flag *flag)
 	 else if (ft_strchr("sci", prt->i))
 	 {*/
 	if (prt->i == 's')
-		spec_s()
-			if (prt->i == 'c')
-				spec_c();
+		spec_s(prt, flag, ap);
+	if (prt->i == 'c')
+		spec_c(prt, flag, ap);
 	//	}
 }
