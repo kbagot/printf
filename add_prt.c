@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 18:57:33 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/09 18:09:14 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/10 15:02:06 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,5 @@ void		add_prt(t_prt *prt, t_flag *flag)
 		}
 	}
 	prt->returnvalue += ft_strlen(prt->spec);
-	free(prt->spec);
-	free(prt->prt);
-	prt->spec = NULL;
+	ft_strdel(&prt->spec);
 }

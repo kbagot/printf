@@ -6,20 +6,16 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 17:53:04 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/09 18:09:16 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/10 15:08:09 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PRINTF_H
 # define PRINTF_H
 
-# include <stdio.h>
-# include <stdarg.h>
-# include <stdlib.h>
 # include <libft.h>
+# include <stdarg.h>
 # include <wchar.h>
-# include <limits.h>
-# include <float.h>
 
 typedef struct	s_prt
 {

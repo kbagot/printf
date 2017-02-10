@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/09 13:17:15 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/09 15:01:16 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/10 15:01:34 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,5 @@ void		width_mod(t_flag *flag, t_prt *prt)
 		flag->width--;
 	}
 	width_mod_2(flag, prt, i);
+	free(tmp);
 }

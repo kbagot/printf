@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 19:16:31 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/09 18:37:50 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/10 14:44:16 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void		make_char_specif(va_list ap, t_prt *prt, t_flag *flag)
 	 {*/
 	if (prt->i == 's')
 		spec_s(prt, flag, ap);
-	if (prt->i == 'c')
+	else if (prt->i == 'c')
 		spec_c(prt, flag, ap);
 	//	}
 }

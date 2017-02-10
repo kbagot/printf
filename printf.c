@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 15:15:14 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/09 18:03:42 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/10 15:04:56 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int	b_parse(t_prt *prt, va_list ap, int j, const char *restrict format)
 		}
 	prt->prt = ft_strsub(&format[prt->index], 1, j - prt->index);
 	make_specifier(ap, prt);
+	free(prt->prt);
 	prt->index = j + 1;
 	return (prt->index);
 }
@@ -75,6 +76,7 @@ static int	send_prt(t_prt *prt, int j, va_list ap, const char *restrict format)
 			{
 				prt->prt = ft_strsub(&format[prt->index], 1, 1);
 				make_specifier(ap, prt);
+				free(prt->prt);
 				prt->index += 2;
 			}
 		}
@@ -100,8 +102,9 @@ int			ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	prt->returnvalue = 0;
 	pcharc = send_prt(prt, j, ap, format);
+	va_end(ap);
+	free(prt);
 	if (pcharc == -1)
 		return (0);
-	va_end(ap);
 	return (prt->returnvalue + pcharc);
 }
