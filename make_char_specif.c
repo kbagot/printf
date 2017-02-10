@@ -6,42 +6,12 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 19:16:31 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/10 14:44:16 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/10 20:25:19 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
-/*
-   char	*decimal_to_binary(int n)
-   {
-   int c;
-   int d;
-   int count;
-   int c, d, count;
-   char *pointer;
 
-   count = 0;
-   pointer = (char*)malloc(32+1);
-
-   if ( pointer == NULL )
-   exit(EXIT_FAILURE);
-
-   for ( c = 31 ; c >= 0 ; c-- )
-   {
-   d = n >> c;
-
-   if ( d & 1 )
- *(pointer+count) = 1 + '0';
- else
- *(pointer+count) = 0 + '0';
-
- count++;
- }
- *(pointer+count) = '\0';
-
- return  pointer;
- }
- */
 static void	spec_s(t_prt *prt, t_flag *flag, va_list ap)
 {
 	char	*tmp;
@@ -80,32 +50,28 @@ static void	spec_c(t_prt *prt, t_flag *flag, va_list ap)
 		add_prt(prt, flag);
 }
 
+static void	spec_lc(t_prt *prt, t_flag *flag, va_list ap)
+{
+	wint_to_char(va_arg(ap, wint_t), prt, flag);
+	add_prt(prt, flag);
+}
+
+static void	spec_ls(t_prt *prt, t_flag *flag, va_list ap)
+{
+	wchar_to_char(va_arg(ap, wchar_t*), prt, flag);
+	if (flag->precision != 0)
+		flag->precision = -1;
+	add_prt(prt, flag);
+}
+
 void		make_char_specif(va_list ap, t_prt *prt, t_flag *flag)
 {
-	int		dec;
-
-	dec = 0;
-	/*	if (ft_strchr("SC", prt->i))
-		{
-
-	 ** Bytes|    c4	     Format Output             |        Format Input         |
-	 **   1  | 0xxxxxxx    c3                       | 00000000 00000000 0xxxxxxx  |
-	 **   2  | 110yyyyy 10xxxxxx     c2             | 00000000 00000yyy yyxxxxxx  |
-	 **   3  | 1110zzzz 10yyyyyy 10xxxxxx    c1     | 00000000 zzzzyyyy yyxxxxxx  |
-	 ** 	 4  | 11110www 10zzzzzz 10yyyyyy 10xxxxxx  | 000wwwzz zzzzyyyy yyxxxxxx  |
-
-	 prt->spec = ft_strnew(10);
-	 ft_masterputnbru(va_arg(ap, unsigned int), prt);
-	 prt->speclen = ft_strlen(prt->spec);
-	 printf("%s\n {%d}", prt->spec, prt->speclen);
-	 ft_puthexa(va_arg(ap, wchar_t), prt->i, prt);
-	 printf("%s\n {%d}", prt->spec, prt->speclen);
-	 }
-	 else if (ft_strchr("sci", prt->i))
-	 {*/
-	if (prt->i == 's')
+	if (prt->i == 'S' || (prt->i == 's' && flag->l == 1))
+		spec_ls(prt, flag, ap);
+	else if (prt->i == 'C' || (prt->i == 'c' && flag->l == 1))
+		spec_lc(prt, flag, ap);
+	else if (prt->i == 's')
 		spec_s(prt, flag, ap);
 	else if (prt->i == 'c')
 		spec_c(prt, flag, ap);
-	//	}
 }

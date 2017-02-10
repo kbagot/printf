@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 18:57:33 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/10 15:02:06 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/10 19:44:27 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	hash_mod(t_prt *prt)
 static void	add_prt2(t_prt *prt, t_flag *flag)
 {
 	if (flag->space == 1 && (prt->spec[0] != '-' && prt->spec[0] != '+')
-			&& ft_strchr("oxXOpscu%", prt->i) == NULL &&
+			&& ft_strchr("CSoxXOpscu%", prt->i) == NULL &&
 			(prt->speclen >= flag->width && prt->speclen >= flag->precision))
 	{
 		flag->space = 0;
@@ -49,7 +49,7 @@ static void	add_prt2(t_prt *prt, t_flag *flag)
 	}
 	if (prt->i == 'p')
 		prt->speclen -= 2;
-	if (ft_strchr("c%", prt->i) == NULL && flag->precision != -1)
+	if (ft_strchr("Cc%", prt->i) == NULL && flag->precision != -1)
 		precision_mod(flag, prt);
 	prt->speclen = (int)ft_strlen(prt->spec);
 	if (flag->width > prt->speclen)
