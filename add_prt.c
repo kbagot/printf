@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 18:57:33 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/10 19:44:27 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/11 16:07:26 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ static void	add_prt2(t_prt *prt, t_flag *flag)
 		else
 			prt_modifier(prt, ft_strjoin("+", prt->spec));
 	}
-	if (prt->i == 'p')
-		prt->speclen -= 2;
 	if (ft_strchr("Cc%", prt->i) == NULL && flag->precision != -1)
 		precision_mod(flag, prt);
 	prt->speclen = (int)ft_strlen(prt->spec);

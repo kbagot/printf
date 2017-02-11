@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/09 13:17:15 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/10 15:01:34 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/11 15:46:00 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,13 @@ static void	width_mod_2(t_flag *flag, t_prt *prt, int i)
 			prt->spec[i] = '0';
 		}
 	}
-	if (flag->hash == 1 && flag->zero == 1)
-		prt->spec[1] = prt->i;
+	if (flag->zero == 1 && (flag->hash == 1 || prt->i == 'p'))
+	{
+		if (prt->i == 'p')
+			prt->spec[1] = 'x';
+		else
+			prt->spec[1] = prt->i;
+	}
 	if (flag->space == 1)
 		prt_modifier(prt, ft_strjoin(" ", prt->spec));
 }
@@ -41,7 +46,7 @@ void		width_mod(t_flag *flag, t_prt *prt)
 	prt->speclen = (int)ft_strlen(prt->spec);
 	if (flag->space == 1)
 		flag->width--;
-	if (flag->hash == 1 && flag->zero == 1)
+	if (flag->zero == 1 && (flag->hash == 1 || prt->i == 'p'))
 		prt->spec[1] = '0';
 	while ((flag->width - prt->speclen) > 0)
 	{

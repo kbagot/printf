@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/09 13:24:18 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/10 20:36:19 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/11 16:09:10 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	precision_mod_2(t_flag *flag, t_prt *prt, int signe)
 {
 	if (flag->precision == 0 && ft_atoi(prt->spec) == 0)
 		prt->spec[0] = '\0';
-	else if (prt->i == 's')
+	else if (prt->i == 's' || prt->i == 'S')
 		prt->spec[flag->precision] = '\0';
 	else if (flag->precision > prt->speclen)
 		while ((flag->precision - prt->speclen) > 0)
@@ -29,7 +29,7 @@ static void	precision_mod_2(t_flag *flag, t_prt *prt, int signe)
 	{
 		if (prt->i != 'X')
 			prt_modifier(prt, ft_strjoin("0x", prt->spec));
-		else	
+		else
 			prt_modifier(prt, ft_strjoin("0X", prt->spec));
 	}
 	if (signe == 45)
@@ -46,7 +46,7 @@ void		precision_mod(t_flag *flag, t_prt *prt)
 	if (flag->precision != 0)
 		flag->zero = 0;
 	if (prt->i == 'p' || ((prt->i == 'X' || prt->i == 'x') &&
-				flag->hash == 1 && flag->precision != -1))
+				flag->hash == 1 && flag->precision != 0))
 		prt->spec = ft_strdup(&prt->spec[2]);
 	if ((prt->spec[0] == '-' || prt->spec[0] == '+')
 			&& flag->precision >= prt->speclen)
