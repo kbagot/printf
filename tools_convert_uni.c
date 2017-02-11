@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 18:29:24 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/11 16:10:08 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/11 16:36:07 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		wchar_to_char(wchar_t *wchar, t_prt *prt, t_flag *flag)
 		while (wchar[i])
 		{
 			if ((n < flag->precision && ft_wcharlen(wchar[i])
-					   	+ n <= flag->precision) || (flag->precision <= 0))
+						+ n <= flag->precision) || (flag->precision <= 0))
 				n = ft_strwchar(wchar[i], prt->spec, n);
 			i++;
 		}
