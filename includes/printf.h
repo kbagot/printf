@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 17:53:04 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/10 19:28:10 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/11 17:40:03 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int				main(void);
 int				ft_printf(const char *restrict format, ...);
 void			make_specifier(va_list ap, t_prt *prt);
 void			add_prt(t_prt *prt, t_flag *flag);
-void			init_sub_specif(t_flag *flag, t_prt *prt);
+void			init_sub_specif(t_flag *flag, t_prt *prt, va_list ap);
 void			add_length(t_flag *flag, t_prt *prt, va_list ap);
 void			ft_masterputnbr(long long int n, t_prt *prt);
 void			ft_masterputnbru(unsigned long long int n, t_prt *prt);
