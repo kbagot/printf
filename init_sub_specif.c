@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 20:59:11 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/09 14:57:24 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/11 17:36:03 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,27 @@ static int	init_flag(t_flag *flag, t_prt *prt, int j)
 	return (j);
 }
 
-static int	init_width_preci(t_flag *flag, t_prt *prt, int j)
+static int	init_width_preci(t_flag *flag, t_prt *prt, int j, va_list ap)
 {
-	if (prt->prt[j] == '.' || ft_strchr("0123456789", prt->prt[j]))
+	if (ft_strchr("*.0123456789", prt->prt[j]))
 	{
 		if (ft_strchr("0123456789", prt->prt[j]))
 			flag->width = ft_atoi(&prt->prt[j]);
-		while (ft_strchr("0123456789", prt->prt[j]))
+		else if (prt->prt[j] == '*')
+			flag->width = va_arg(ap, int);
+		while (ft_strchr("*0123456789", prt->prt[j]))
 			j++;
-		if (prt->prt[j] == '.' && ft_strchr("0123456789", prt->prt[j + 1]))
-			flag->precision = ft_atoi(&prt->prt[j + 1]);
+		if (prt->prt[j] == '.' && ft_strchr("*0123456789", prt->prt[j + 1]))
+		{
+			if (prt->prt[j + 1] == '*')
+				flag->precision = va_arg(ap, int);
+			else
+				flag->precision = ft_atoi(&prt->prt[j + 1]);
+		}
 		else if (prt->prt[j] == '.')
 			flag->precision = 0;
 	}
-	while (ft_strchr(".0123456789", prt->prt[j]))
+	while (ft_strchr("*.0123456789", prt->prt[j]))
 		j++;
 	return (j);
 }
@@ -84,13 +91,18 @@ static void	init_length(t_flag *flag, t_prt *prt, int j)
 	}
 }
 
-void		init_sub_specif(t_flag *flag, t_prt *prt)
+void		init_sub_specif(t_flag *flag, t_prt *prt, va_list ap)
 {
 	int j;
 
 	j = 0;
 	init_var(flag);
 	j = init_flag(flag, prt, j);
-	j = init_width_preci(flag, prt, j);
+	j = init_width_preci(flag, prt, j, ap);
+	if (flag->width < 0)
+	{
+		flag->width *= -1;
+		flag->minus = 1;
+	}
 	init_length(flag, prt, j);
 }

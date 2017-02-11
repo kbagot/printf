@@ -6,7 +6,7 @@
 /*   By: kbagot <kbagot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/17 15:15:14 by kbagot            #+#    #+#             */
-/*   Updated: 2017/02/10 15:04:56 by kbagot           ###   ########.fr       */
+/*   Updated: 2017/02/11 17:06:56 by kbagot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	b_parse(t_prt *prt, va_list ap, int j, const char *restrict format)
 
 	pp = j;
 	while ((ft_strchr("sSpdiDoOuUxXcC%", format[j])) == NULL && format[j])
-		if ((ft_strchr("%#0-+ hljz.123456789", format[j++])) == NULL)
+		if ((ft_strchr("%*#0-+ hljz.123456789", format[j++])) == NULL)
 		{
 			j = no_specif(prt, j, pp, format);
 			return (j);
